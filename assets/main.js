@@ -1,5 +1,5 @@
 
-const dataText = await fetch('./data/dockets-2026-01-28.csv').then((res) => res.text())
+const dataText = await fetch('./data/dockets-2026-03-16.csv').then((res) => res.text())
 const [fields, ...dataList] = dataText.split('\n').map((line) => (line.split(',')))
 
 const transforms = {
@@ -57,7 +57,7 @@ const COURTS = [1, 2, 3, 4, 5, 6, 7, 8]
   .map((precinct) => [`${precinct}1`, `${precinct}2`])
   .reduce((result, current) => ([...result, ...current]), [])
 
-const DAYS_OF_YEAR_2025 = [...getDaysOfYear('2025')]
+const DAYS_OF_YEAR_2026 = [...getDaysOfYear('2026')]
 
 const COLORS = [ '#fee8c8', '#fdd49e', '#fdbb84', '#fc8d59', '#ef6548', '#d7301f', '#990000' ]
 const EMPTY_COLOR = '#EFEFEF'
@@ -106,12 +106,12 @@ const {
 function renderDay(dayInfo, courtnum, docketData) {
   const dayWidth = 10
   const base = `<rect
-    fill="${docketData && COLORS[calcColorIndex(docketData.caseCount, MAX_CASE_COUNTS)] || (dayInfo.year === 2025 && EMPTY_COLOR) || '#FFF'}"
+    fill="${docketData && COLORS[calcColorIndex(docketData.caseCount, MAX_CASE_COUNTS)] || (dayInfo.year === 2026 && EMPTY_COLOR) || '#FFF'}"
     class="docket-day"
     data-case-count="${docketData && docketData.caseCount || 0}"
     data-court-name="${docketData && docketData['Court Name']}"
     data-courtnum="${courtnum}"
-    data-woy="2025-${dayInfo.weekOfYear}"
+    data-woy="2026-${dayInfo.weekOfYear}"
     data-wom="${dayInfo.weekOfMonth}"
     data-dow="${dayInfo.dayOfWeek}"
     data-dom="${dayInfo.date}"
@@ -176,27 +176,27 @@ function renderMonth(monthInfo, weekOfYearStart) {
 
 const MAX_DOCKET_DAY = Object.values(countedData).find((docketDay) => (docketDay.caseCount === MAX_CASE_COUNTS))
 
-const MONTHS_OF_YEAR_2025 = [...getMonthsOfYear('2025')]
+const MONTHS_OF_YEAR_2026 = [...getMonthsOfYear('2026')]
 
-const MONTH_STARTS = DAYS_OF_YEAR_2025.filter((day) => day.date === 1).map((day) => (day.weekOfYear))
+const MONTH_STARTS = DAYS_OF_YEAR_2026.filter((day) => day.date === 1).map((day) => (day.weekOfYear))
 
 function renderCourt(courtnum) {
 
-  const yearDays = DAYS_OF_YEAR_2025
+  const yearDays = DAYS_OF_YEAR_2026
     .filter((dayInfo) => (dayInfo.isWeekDay))
     .map((dayInfo) => {
       return renderDay(dayInfo, courtnum, countedData[`${courtnum}--${dayInfo.dateStr}`])}
     )
     .join('')
 
-  const monthBounds = MONTHS_OF_YEAR_2025
+  const monthBounds = MONTHS_OF_YEAR_2026
     .map((monthInfo, index) => {
       return renderMonth(monthInfo, MONTH_STARTS[index])
     })
     .join('')
 
   const dayWidth = 10
-  const weeks = DAYS_OF_YEAR_2025[DAYS_OF_YEAR_2025.length - 1].weekOfYear
+  const weeks = DAYS_OF_YEAR_2026[DAYS_OF_YEAR_2026.length - 1].weekOfYear
 
   const courtInfo = Object.values(countedData).find((court) => (court.courtnum === courtnum))
   
@@ -287,7 +287,7 @@ function renderVis() {
       return
     }
 
-    if (value.year === '2025') {
+    if (value.year === '2026') {
       document.querySelector('#dynamic-styles').innerHTML = `
       rect[data-date="${value.date}"] {
         stroke: blue;
