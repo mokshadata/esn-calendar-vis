@@ -1,6 +1,6 @@
 // updated for 2026
 
-const dataText = await fetch('./data/dockets-2026-03-16.csv').then((res) => res.text())
+const dataText = await fetch('./data/dockets-2026-03-23.csv').then((res) => res.text())
 const [fields, ...dataList] = dataText.split('\n').map((line) => (line.split(',')))
 
 const transforms = {
